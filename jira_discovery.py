@@ -13,7 +13,7 @@ import json
 def get_auth_info(json_file):
     """takes config.json file, returns auth dictionary of info"""
     
-    f= open('config.json')
+    f= open(json_file)
     data = json.load(f)
     user_info = {}
 
@@ -50,5 +50,13 @@ def jira_auth(user_info):
     
 def get_last_three_mo(jira):
    """takes jira, returns array of issue objects from last 3 months""" 
-   for issue in jira.search_issues('reporter = currentUser() order by created desc', maxResults=3):
+   for issue in jira.search_issues('project in ("Web Content & Campaigns") AND createdDate >= startofmonth(-1) AND createdDate <= endOfmonth(-1)', maxResults=20):
       print('{}: {}'.format(issue.key, issue.fields.summary))
+   
+      
+if __name__ == "__main__":
+       
+   auth_dict = get_auth_info("config.json")
+   jira = jira_auth(auth_dict)
+   
+   get_last_three_mo(jira)
