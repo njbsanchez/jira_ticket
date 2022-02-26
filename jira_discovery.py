@@ -48,10 +48,10 @@ def jira_auth(user_info):
     
     return jira
     
-def get_last_three_mo(jira):
-   """takes jira, returns array of issue objects from last 3 months""" 
-   for issue in jira.search_issues('project in ("Web Content & Campaigns") AND createdDate >= startofmonth(-1) AND createdDate <= endOfmonth(-1)', maxResults=20):
-      print('{}: {}'.format(issue.key, issue.fields.summary))
+def get_last_one_mo(jira):
+   """takes jira, returns array of issue objects from last month""" 
+   for issue in jira.search_issues('project in ("Web Content & Campaigns") AND createdDate >= startofmonth(-1) AND createdDate <= endOfmonth(-1)', maxResults=1):
+      print('{}: {}'.format(issue.key, issue.fields.__dict__))
    
       
 if __name__ == "__main__":
@@ -59,4 +59,4 @@ if __name__ == "__main__":
    auth_dict = get_auth_info("config.json")
    jira = jira_auth(auth_dict)
    
-   get_last_three_mo(jira)
+   get_last_one_mo(jira)
